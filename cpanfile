@@ -20,7 +20,6 @@ on 'test' => sub {
     requires 'Test::Exception'  => 0;
     requires 'Test::MockObject' => 0;
     requires 'Test::More'       => 0;
-    requires 'Test::TCP'        => 0;
     requires 'Test::TCP::Multi' => 0;
 };
 

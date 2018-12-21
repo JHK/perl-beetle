@@ -13,8 +13,8 @@ test_beetle_live(
     sub {
         my $ports = shift;
 
-        my $rabbit = sprintf 'localhost:%d', $ports->{rabbit1};
-        my $redis  = sprintf 'localhost:%d', $ports->{redis1};
+        my $rabbit = sprintf 'rabbit1:%d', $ports->{rabbit1};
+        my $redis  = sprintf 'redis1:%d', $ports->{redis1};
         my $config = {
             logger      => '/dev/null',
             redis_hosts => $redis,

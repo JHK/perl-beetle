@@ -12,8 +12,8 @@ test_beetle_live(
     sub {
         my $ports = shift;
 
-        my $rabbit = sprintf 'localhost:%d localhost:%d', $ports->{rabbit1}, $ports->{rabbit2};
-        my $redis  = sprintf 'localhost:%d', $ports->{redis1};
+        my $rabbit = sprintf 'rabbit1:%d rabbit2:%d', $ports->{rabbit1}, $ports->{rabbit2};
+        my $redis  = sprintf 'redis1:%d', $ports->{redis1};
 
         my (@timers, $paused);
 

@@ -6,12 +6,14 @@ You need following modules to start developing:
 * Module::Install::AuthorTests
 
 If you have got Carton installed you can install all required modules via:
-  carton install
+
+    carton install
 
 Make sure you set the PERL5LIB variable afterwards:
-  export PERL5LIB=lib:local/lib/perl5
-  prove
-  perl Makefile.PL && make && make manifest && make dist
+
+    export PERL5LIB=lib:local/lib/perl5
+    prove
+    perl Makefile.PL && make && make manifest && make dist
 
 By default all live test which require rabbitmq-server to be running are
 skipped. If you want to run those tests you need to set the environment
@@ -22,16 +24,21 @@ services are automatically started/terminated on each test run for you.
 I highly recommend to -not- use this anymore. Instead start the services
 manually.
 
-To start rabbitmq-server manually, just do this:
+To run integration tests on a vanilla checkout, do this:
 
-screen
-sudo ./t/script/start_rabbit r1 5672
-# open a new window: ^A c
-sudo ./t/script/start_rabbit r2 5673
-# yet another new window: ^A c
-redis-server
+    docker network create beetle
+    docker run --name rabbit1 --net beetle --rm -d -p 5672:5672 -p 15672:15672 rabbitmq:management
+    docker run --name rabbit2 --net beetle --rm -d -p 5673:5673 -p 15673:15673 rabbitmq:management
+    docker run --name redis1  --net beetle --rm -d -p 6379:6379 redis
 
-On Mac OS the easiest way to install redis-server and rabbitmq-server is to use
-MacPorts. It's important that you use rabbitmq-server 2.2.0, not newer. As of
-redis this module has been tested with redis server 1.6.2 and redis server
-2.4.6.
+    # Start your environment in a docker container. This is just an example:
+    docker run --rm --net beetle -it -v $PWD:/app ubuntu bash
+    apt update && apt install -y perl cpanminus libxml2-dev uuid-dev
+    cd /app
+    cpanm install -n --installdeps --with-develop .
+
+    perl Makefile.PL
+    BEETLE_LIVE_TEST=1 make test
+
+    docker stop rabbit1 rabbit2 redis1
+    docker network rm beetle

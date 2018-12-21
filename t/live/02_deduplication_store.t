@@ -39,7 +39,7 @@ test_redis(
 
         {
             throws_ok { $store->redis->blah }
-            qr/\[blah\] ERR unknown command 'BLAH'/,
+            qr/\[blah\] ERR unknown command `BLAH`/,
               'invalid redis command';
         }
 
